@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-01-23
+
+### Added
+- Added Filament 5.0 support
+- Updated `filament/filament` constraint to support both Filament 4 and 5 (`^4.0 || ^5.0`)
+
 ## [1.0.3] - 2026-01-23
 
 ### Fixed
@@ -46,7 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Conditional enabling/disabling of quick add feature
 - Works seamlessly with Livewire's reactive updates
 
-[Unreleased]: https://github.com/cocosmos/filament-quick-add-select/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/cocosmos/filament-quick-add-select/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/cocosmos/filament-quick-add-select/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/cocosmos/filament-quick-add-select/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/cocosmos/filament-quick-add-select/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/cocosmos/filament-quick-add-select/compare/v1.0.0...v1.0.1
