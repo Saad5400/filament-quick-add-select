@@ -1,5 +1,6 @@
 <?php
 
+namespace Cocosmos\FilamentQuickAddSelect;
 
 use Filament\Forms\Components\Select;
 use Illuminate\Support\ServiceProvider;
@@ -8,6 +9,14 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        // Load translations
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'quick-add');
+
+        // Publish translations
+        $this->publishes([
+            __DIR__.'/../lang' => lang_path('vendor/quick-add'),
+        ], 'quick-add-translations');
+
         // Register the quickAdd macro on Select component
         Select::macro('quickAdd', function (bool $enabled = true, ?string $label = null) {
             /** @var Select $this */
