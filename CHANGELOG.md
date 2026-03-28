@@ -5,6 +5,13 @@ All notable changes to `filament-quick-add-select` will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2](https://github.com/cocosmos/filament-quick-add-select/compare/v1.1.1...v1.1.2) (2026-03-28)
+
+
+### Bug Fixes
+
+* **search:** use whereLike for case-sensitive search in PostgreSQL ([ca7f119](https://github.com/cocosmos/filament-quick-add-select/commit/ca7f11973452c92626c9cad0b5393dc88b317427))
+
 ## [1.1.1](https://github.com/cocosmos/filament-quick-add-select/compare/v1.1.0...v1.1.1) (2026-03-22)
 
 
