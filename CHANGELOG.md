@@ -5,6 +5,18 @@ All notable changes to `filament-quick-add-select` will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/cocosmos/filament-quick-add-select/compare/v1.1.2...v1.2.0) (2026-04-06)
+
+
+### Features
+
+* **select:** [#9](https://github.com/cocosmos/filament-quick-add-select/issues/9) enhance quickAdd macro with search reset option and update README ([5693c08](https://github.com/cocosmos/filament-quick-add-select/commit/5693c085a7d8e65991a584d25ab28fae1c2239f1))
+
+
+### Bug Fixes
+
+* **select-component:** [#9](https://github.com/cocosmos/filament-quick-add-select/issues/9) enhance quickAdd macro to accept Closure for label parameter ([6cfc8fe](https://github.com/cocosmos/filament-quick-add-select/commit/6cfc8febb470ffa9e1fa98bea1884c474c4afd17))
+
 ## [1.1.2](https://github.com/cocosmos/filament-quick-add-select/compare/v1.1.1...v1.1.2) (2026-03-28)
 
 
