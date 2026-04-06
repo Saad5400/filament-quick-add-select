@@ -2,6 +2,7 @@
 
 namespace Cocosmos\FilamentQuickAddSelect;
 
+use Closure;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +19,7 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
         ], 'quick-add-translations');
 
         // Register the quickAdd macro on Select component
-        Select::macro('quickAdd', function (bool $enabled = true, ?string $label = null) {
+        Select::macro('quickAdd', function (bool $enabled = true, string|Closure|null $label = null, bool $resetSearch = false) {
             /** @var Select $this */
             if (! $enabled) {
                 return $this;
@@ -57,7 +58,7 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
 
                 if (! $exactMatch) {
                     $quickAddKey = "__quick_add__{$search}";
-                    $quickAddLabel = is_callable($labelTemplate)
+                    $quickAddLabel = $labelTemplate instanceof Closure
                         ? $labelTemplate($search)
                         : str_replace('{search}', $search, $labelTemplate);
 
@@ -67,8 +68,25 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
                 return $results;
             });
 
+            // Listen for search reset via Livewire event (scoped to this component)
+            $this->extraAlpineAttributes([
+                'x-on:quick-add-created.window' => <<<'JS'
+                    if ($event.detail.statePath === select.statePath) {
+                        if ($event.detail.resetSearch) {
+                            if (select.searchInput) select.searchInput.value = '';
+                            select.searchQuery = '';
+                            select.options = [];
+                        } else {
+                            select.options = select.options.filter(opt => !String(opt.value).startsWith('__quick_add__'));
+                        }
+                        select.renderOptions();
+                        if (select.options.length === 0) select.showNoOptionsMessage();
+                    }
+                JS,
+            ]);
+
             // Handle quick-add when state is updated
-            $this->afterStateUpdated(function (Select $component, $state) {
+            $this->afterStateUpdated(function (Select $component, $state) use ($resetSearch) {
                 if (! $state) {
                     return;
                 }
@@ -80,7 +98,7 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
 
                 $titleAttribute = $component->getRelationshipTitleAttribute();
                 $model = $relationship->getRelated();
-                $hasChanges = false;
+                $created = false;
 
                 // Handle array (multiple select)
                 if (is_array($state)) {
@@ -95,13 +113,13 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
                             ]);
 
                             $newState[] = $newRecord->getKey();
-                            $hasChanges = true;
+                            $created = true;
                         } else {
                             $newState[] = $key;
                         }
                     }
 
-                    if ($hasChanges) {
+                    if ($created) {
                         $component->state($newState);
                     }
                 } elseif (is_string($state) && str_starts_with($state, '__quick_add__')) {
@@ -113,6 +131,16 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
                     ]);
 
                     $component->state($newRecord->getKey());
+                    $component->refreshSelectedOptionLabel();
+                    $created = true;
+                }
+
+                if ($created) {
+                    $component->getLivewire()->dispatch(
+                        'quick-add-created',
+                        statePath: $component->getStatePath(),
+                        resetSearch: $resetSearch,
+                    );
                 }
             });
 
