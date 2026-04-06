@@ -2,6 +2,7 @@
 
 namespace Cocosmos\FilamentQuickAddSelect;
 
+use Closure;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +19,7 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
         ], 'quick-add-translations');
 
         // Register the quickAdd macro on Select component
-        Select::macro('quickAdd', function (bool $enabled = true, ?string $label = null, bool $resetSearch = false) {
+        Select::macro('quickAdd', function (bool $enabled = true, string|Closure|null $label = null, bool $resetSearch = false) {
             /** @var Select $this */
             if (! $enabled) {
                 return $this;
@@ -57,7 +58,7 @@ class FilamentQuickAddServiceProvider extends ServiceProvider
 
                 if (! $exactMatch) {
                     $quickAddKey = "__quick_add__{$search}";
-                    $quickAddLabel = is_callable($labelTemplate)
+                    $quickAddLabel = $labelTemplate instanceof Closure
                         ? $labelTemplate($search)
                         : str_replace('{search}', $search, $labelTemplate);
 
